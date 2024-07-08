@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rat_Movement : MonoBehaviour
+public class Polluted_Human : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
