@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using Monster;
 
 public class HeroKnight : MonoBehaviour {
 
@@ -128,7 +129,7 @@ public class HeroKnight : MonoBehaviour {
             foreach (Collider2D monster in hit)
             {
                 Debug.Log("플레이어가 몬스터 공격");
-                monster.GetComponent<Monster>().Hit();
+                monster.GetComponent<MonsterHit>().Hit();
             }
 
             // Reset timer
