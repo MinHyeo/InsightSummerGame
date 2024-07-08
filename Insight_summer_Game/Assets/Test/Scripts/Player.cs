@@ -51,7 +51,7 @@ public class Player : MonoBehaviour {
         }
     }
     void Jump() {
-        PlayerRigidbody.velocity = new Vector2(PlayerRigidbody.velocity.x, jumpForce);
+        PlayerRigidbody.velocity = new Vector2(0, jumpForce);
         
         Debug.Log("Jump!");
     }

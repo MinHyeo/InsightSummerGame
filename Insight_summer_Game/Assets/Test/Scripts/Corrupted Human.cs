@@ -61,6 +61,8 @@ public class CorruptedHuman : Monster
         Vector2 direction = (targetPlayer.position - transform.position).normalized;
         monsterRigidbody.velocity = new Vector2(direction.x * speed, monsterRigidbody.velocity.y);
 
+        animator.SetInteger("AnimState", 1);
+
         if (direction.x > 0) {
             //spriteRenderer.flipX = false;
             transform.localScale = new Vector3(1f, 1f, 1f);
@@ -95,7 +97,7 @@ public class CorruptedHuman : Monster
         animator.SetTrigger("Hit");
     }
 
-    private void PlayerDetect() {
+    private void PlayerDetect() { // 추적 범위안에 플레이어가 있는지 탐색
         Collider2D[] players = Physics2D.OverlapCircleAll(transform.position, searchRange, playerLayer);
         if (players.Length > 0) {
             // 가장 가까운 플레이어를 타겟으로 설정
@@ -106,10 +108,11 @@ public class CorruptedHuman : Monster
             // 탐지 범위 내에 플레이어가 없으면 추적 중지
             targetPlayer = null;
             isChasing = false;
+            animator.SetInteger("AnimState", 0);
         }
     }
 
-    private void CheckAttackRange() {
+    private void CheckAttackRange() { // 공격가능 범위 안에 플레이어가 있는지 탐색
         Collider2D playerInRange = Physics2D.OverlapBox(transform.position, attackRange, 0, playerLayer);
         if (playerInRange != null && playerInRange.CompareTag("Player")) {
             Attack();
@@ -124,15 +127,16 @@ public class CorruptedHuman : Monster
                 enemy.GetComponent<Player>().TakeDamage(attackPower);
             }
         }
+        
     }
 
-    void OnDrawGizmosSelected() {
+    void OnDrawGizmosSelected() { 
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, searchRange);
-        Gizmos.DrawWireCube(transform.position, attackRange);
+        Gizmos.DrawWireSphere(transform.position, searchRange); //추적 탐지 범위
+        Gizmos.DrawWireCube(transform.position, attackRange);// 공격 탐지 범위
 
         if (attackPoint != null) {
-            Gizmos.DrawWireSphere(attackPoint.position, attackRange.y / 2);
+            Gizmos.DrawWireSphere(attackPoint.position, attackRange.y / 2); //공격 판정 범위
         }
     }
 }
