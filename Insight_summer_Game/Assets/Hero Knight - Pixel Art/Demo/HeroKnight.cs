@@ -7,6 +7,7 @@ public class HeroKnight : MonoBehaviour {
     [SerializeField] float      m_speed = 4.0f;
     [SerializeField] float      m_jumpForce = 7.5f;
     [SerializeField] float      m_rollForce = 6.0f;
+    [SerializeField] float      m_health = 100.0f;
     [SerializeField] bool       m_noBlood = false;
     [SerializeField] GameObject m_slideDust;
 
@@ -202,8 +203,13 @@ public class HeroKnight : MonoBehaviour {
         }
     }
 
-    public void Hit()
+    public void Hit(float Damage = 0)
     {
         m_animator.SetTrigger("Hurt");
+        m_health -= Damage;
+        if (m_health < 0)
+        {
+            m_noBlood = true;
+        }
     }
 }

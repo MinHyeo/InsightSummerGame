@@ -40,12 +40,14 @@ public class PollutedHuman : Monster
     }
     public override void Attack()
     {
-        monsterAnimator.SetTrigger("Attack");
+        Debug.Log("Monster is Attacking");
+        targetPlayer.GetComponent<Player>().Hit(attackPower);
         return;
     }
 
     public override void Chase()
     {
+        Debug.Log("Monster is Chasing");
         monsterAnimator.SetBool("IsDetacted", true);
         //움직이기
         Vector2 dirVec = targetPlayer.position -  transform.position;  //방향 측정  
@@ -56,7 +58,7 @@ public class PollutedHuman : Monster
         {
             monsterSpriteRenderer.flipX = false;
         }
-        Vector2 nextVec = dirVec.normalized * speed * Time.deltaTime;  //거리 설정
+        Vector2 nextVec = dirVec.normalized * (speed * 1.3f) * Time.deltaTime;  //거리 설정
         nextVec.y = 0;
         monsterRigid.MovePosition(monsterRigid.position + nextVec);   //이동
         monsterRigid.velocity = Vector2.zero;
@@ -65,6 +67,8 @@ public class PollutedHuman : Monster
 
     public override void Contact()
     {
+        Debug.Log("Player Hitted");
+        targetPlayer.GetComponent<Player>().Hit(1.0f);
         return;
     }
 
@@ -76,16 +80,19 @@ public class PollutedHuman : Monster
 
     public override void Hit()
     {
+        Debug.Log("Monster Hitted");
         return;
     }
 
     public override void Idle()
     {
+        Debug.Log("Monster is Idle Mode now");
         return;
     }
 
     public override void Walk()
     {
+        Debug.Log("Monster is Scouting");
         return;
     }
 
@@ -103,7 +110,6 @@ public class PollutedHuman : Monster
             monsterAnimator.SetBool("IsDetacted", false);
         }
     }
-
     public bool IsAttackableDistance() {
         //공격 가능한 거리인지 측정
         if (targetPlayer == null) {
@@ -118,5 +124,10 @@ public class PollutedHuman : Monster
         {
             return false;
         }
+    }
+    //몸빵 충돌 구현하기
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Contact();
     }
 }
