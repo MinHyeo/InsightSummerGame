@@ -34,7 +34,7 @@ namespace Monster.Skeleton
                     //Attack();
                     break;
                 case State.Dead:
-                    Dead();
+                    //Dead();
                     break;
             }
         }
@@ -52,6 +52,31 @@ namespace Monster.Skeleton
                 case State.Chase:
                     Chase();
                     break;
+            }
+        }
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireCube(transform.position + Vector3.right * nextMove, attackRange);
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireCube(transform.position, searchRange);
+        }
+        protected override void Chase()
+        {
+            base.Chase();
+            RaycastHit2D playerhit = Physics2D.BoxCast(transform.position, attackRange, 0, Vector2.right * nextMove, LayerMask.GetMask("Player"));
+            if (playerhit.collider != null)
+            {
+                state = State.Attack;
+                Attack();
+            }
+        }
+        private void Attack()
+        {
+            Collider2D[] player = Physics2D.OverlapBoxAll(transform.position + Vector3.right * nextMove, attackRange, 0, LayerMask.GetMask("Player"));
+            foreach (var target in player)
+            {
+                target.GetComponent<HeroKnight>().Hit(attackPower);
             }
         }
     }

@@ -62,10 +62,5 @@ namespace Monster.Mouse
                 collision.GetComponent<HeroKnight>().Hit(attackPower);
             }
         }
-        protected override void Chase()
-        {
-            base.Chase();
-
-        }
     }
 }
