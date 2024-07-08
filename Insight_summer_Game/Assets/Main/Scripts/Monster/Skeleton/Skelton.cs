@@ -4,12 +4,13 @@ using UnityEngine;
 
 namespace Monster.Skeleton
 {
-    public class Skelton : Monster
+    public class Skelton : Monster, IAttackable
     {
         private void Awake()
         {
             rigid = GetComponent<Rigidbody2D>();
             sprite = GetComponent<SpriteRenderer>();
+            anim = GetComponent<Animator>();
         }
         private void Start()
         {
@@ -64,6 +65,9 @@ namespace Monster.Skeleton
         protected override void Chase()
         {
             base.Chase();
+        }
+        public void CheckAttackRange()
+        {
             RaycastHit2D playerhit = Physics2D.BoxCast(transform.position, attackRange, 0, Vector2.right * nextMove, LayerMask.GetMask("Player"));
             if (playerhit.collider != null)
             {
@@ -71,13 +75,15 @@ namespace Monster.Skeleton
                 Attack();
             }
         }
-        private void Attack()
+        public void Attack()
         {
+            //Animation Part
+            anim.SetTrigger("Attack");
+            
             Collider2D[] player = Physics2D.OverlapBoxAll(transform.position + Vector3.right * nextMove, attackRange, 0, LayerMask.GetMask("Player"));
             foreach (var target in player)
-            {
                 target.GetComponent<HeroKnight>().Hit(attackPower);
-            }
+            state = State.Chase;
         }
     }
 }

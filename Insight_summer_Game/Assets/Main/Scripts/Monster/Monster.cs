@@ -1,9 +1,14 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Monster
 {
+    interface IAttackable 
+    {
+        public void CheckAttackRange();
+        public void Attack();
+    }
+
     public abstract class Monster : MonoBehaviour
     {
         protected enum State
@@ -27,6 +32,7 @@ namespace Monster
 
         protected SpriteRenderer sprite;
         protected Rigidbody2D rigid;
+        protected Animator anim;
 
         protected Transform target;
 
@@ -53,10 +59,9 @@ namespace Monster
             RaycastHit2D rayHit = Physics2D.Raycast(frontVec, Vector2.down, 1, LayerMask.GetMask("Ground"));
             if (rayHit.collider == null)
                 nextMove *= -1;
-            //rigid.velocity = new Vector2(nextMove * speed, rigid.velocity.y);
             rigid.MovePosition(new Vector2(transform.position.x + nextMove * speed * Time.deltaTime, transform.position.y));
 
-            //Animation Part
+            //Animation Part    
         }
         protected virtual void Search()
         {
