@@ -128,7 +128,7 @@ public class HeroKnight : MonoBehaviour {
             foreach (Collider2D monster in hit)
             {
                 Debug.Log("플레이어가 몬스터 공격");
-                //monster.GetComponent<Monster>().Hit();
+                monster.GetComponent<Monster.Monster>().Hit();
             }
 
             // Reset timer
@@ -202,8 +202,9 @@ public class HeroKnight : MonoBehaviour {
         }
     }
 
-    public void Hit()
+    public void Hit(float attackPower)
     {
+        Debug.Log("플레이어 공격 당함");
         m_animator.SetTrigger("Hurt");
     }
 }
