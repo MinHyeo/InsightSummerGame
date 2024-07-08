@@ -21,5 +21,7 @@ public abstract class Monster : MonoBehaviour
    public abstract void Idle();
    public abstract void Walk();
    public abstract void Chase();
+   public abstract void Scan();
+
 
 }
