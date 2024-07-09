@@ -124,7 +124,7 @@ public class HeroKnight : MonoBehaviour {
             // Call one of three attack animations "Attack1", "Attack2", "Attack3"
             m_animator.SetTrigger("Attack" + m_currentAttack);
 
-            Vector2 boxSize = new Vector2(1.0f, 1.0f);
+            Vector2 boxSize = new Vector2(1.5f, 1.0f);
             Collider2D[] hit = Physics2D.OverlapBoxAll(transform.position + Vector3.forward, boxSize, 0, LayerMask.GetMask("Monster"));
             foreach (Collider2D monster in hit)
             {

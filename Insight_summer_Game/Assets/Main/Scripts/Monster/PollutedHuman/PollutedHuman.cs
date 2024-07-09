@@ -3,29 +3,31 @@ using System.Collections;
 
 namespace Monster.PollutedHuman
 {
-    [RequireComponent(typeof(PHumanMovement), typeof(MonsterSearch), typeof(PHumanAttack))]
-    [RequireComponent(typeof(CheckAttackable))]
+    [RequireComponent(typeof(PHumanMovement), typeof(PHumanSearch), typeof(PHumanAttack))]
+    [RequireComponent(typeof(PHumanCheckATK), typeof(PHumanHit))]
     public class PollutedHuman : Monster
     {
         [SerializeField] private PHumanMovement pHumanMovement;
-        [SerializeField] private MonsterSearch monsterSearch;
+        [SerializeField] private PHumanSearch pHumanSearch;
         [SerializeField] private PHumanAttack pHumanAttack;
-        [SerializeField] private CheckAttackable checkAttackable;
+        [SerializeField] private PHumanCheckATK pHumanCheckATK;
+        [SerializeField] private PHumanHit pHumanHit;
 
         private Collider2D attackPoint;
 
         private void Awake()
         {
             pHumanMovement = GetComponent<PHumanMovement>();
-            monsterSearch = GetComponent<MonsterSearch>();
+            pHumanSearch = GetComponent<PHumanSearch>();
             pHumanAttack = GetComponent<PHumanAttack>();
 
             pos = GetComponent<Transform>();
 
 
-            monsterSearch.PlayerFound += OnPlayerFound;
-            monsterSearch.PlayerUnfound += OnPlayerUnfound;
+            pHumanSearch.PlayerFound += OnPlayerFound;
+            pHumanSearch.PlayerUnfound += OnPlayerUnfound;
         }
+
 
         private void Start()
         {
@@ -33,13 +35,13 @@ namespace Monster.PollutedHuman
         }
         protected override void Init()
         {
-            checkAttackable = GetComponentInChildren<CheckAttackable>();
-            checkAttackable.PlayerAttacked += OnPlayerAttack;
-            checkAttackable.PlayerUnAttacked += OnPlayerUnAttack;
+            pHumanCheckATK = GetComponentInChildren<PHumanCheckATK>();
+            pHumanCheckATK.PlayerAttacked += OnPlayerAttack;
+            pHumanCheckATK.PlayerUnAttacked += OnPlayerUnAttack;
 
             MonsterState = State.Idle;
             maxHealth = 100.0f;
-            moveSpeed = 2.0f;
+            moveSpeed = 1.8f;
             attackRange = 0.3f;
             attackSpeed = 1.0f;
             attackPower = 10.0f;
@@ -52,18 +54,18 @@ namespace Monster.PollutedHuman
             switch (MonsterState)
             {
                 case State.Idle:
-                    monsterSearch.Search();
+                    pHumanSearch.Search();
                     break;
                 case State.Patrol:
-                    monsterSearch.Search();
+                    pHumanSearch.Search();
                     pHumanMovement.Patrol();
                     break;
                 case State.Chase:
-                    monsterSearch.Search();
+                    pHumanSearch.Search();
                     pHumanMovement.Chase();
                     break;
                 case State.Attack:
-                    //StartCoroutine(ratAttack.AttackCoroutine());
+                    StartCoroutine(pHumanAttack.AttackCoroutine());
                     break;
                 case State.Die:
                     break;
@@ -73,7 +75,7 @@ namespace Monster.PollutedHuman
 
         private void OnPlayerFound()
         {
-            this.target = monsterSearch.Target;
+            this.target = pHumanSearch.Target;
             pHumanMovement.Target = target;
             MonsterState = State.Chase;
         }

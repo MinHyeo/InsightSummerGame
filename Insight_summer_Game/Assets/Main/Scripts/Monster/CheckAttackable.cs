@@ -9,7 +9,8 @@ namespace Monster
         public event UnityAction PlayerAttacked;
         public event UnityAction PlayerUnAttacked;
 
-        public Transform pos;
+        private Transform pos;
+        protected float attackRange; // 각 몬스터의 공격범위 받아오기
 
         private void Awake()
         {

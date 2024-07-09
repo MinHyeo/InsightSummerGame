@@ -11,9 +11,9 @@ namespace Monster
         public event UnityAction PlayerUnfound;
 
         public Transform Target { get; private set; }
-        private float searchRange = 5.0f;
+        private float searchRange = 5.0f; // 몬스터마다 다르게 수정하기
 
-        public void Search()
+        public virtual void Search()
         {
             RaycastHit2D raycastHit = Physics2D.CircleCast(transform.position, searchRange, Vector2.down, 0, LayerMask.GetMask("Player"));
             if (raycastHit.collider != null)

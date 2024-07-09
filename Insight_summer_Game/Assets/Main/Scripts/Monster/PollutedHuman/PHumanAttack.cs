@@ -2,17 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PHumanAttack : MonoBehaviour
+namespace Monster.PollutedHuman
 {
-    // Start is called before the first frame update
-    void Start()
+    public class PHumanAttack : MonsterAttack
     {
-        
+        private void Awake()
+        {
+            anim = GetComponent<Animator>();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
+

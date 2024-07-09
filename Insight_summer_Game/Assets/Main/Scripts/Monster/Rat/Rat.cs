@@ -3,29 +3,29 @@ using System.Collections;
 
 namespace Monster.Rat
 {
-    [RequireComponent(typeof(RatMovement), typeof(MonsterSearch), typeof(RatAttack))]
-    [RequireComponent (typeof(CheckAttackable), typeof(MonsterHit))]
+    [RequireComponent(typeof(RatMovement), typeof(RatSearch), typeof(RatAttack))]
+    [RequireComponent (typeof(RatCheckATK), typeof(RatHit))]
     public class Rat : Monster
     {
         [SerializeField] private RatMovement ratMovement;
-        [SerializeField] private MonsterSearch monsterSearch;
+        [SerializeField] private RatSearch ratSearch;
         [SerializeField] private RatAttack ratAttack;
-        [SerializeField] private CheckAttackable checkAttackable;
-        [SerializeField] private MonsterHit monsterHit;
+        [SerializeField] private RatCheckATK RatCheckATK;
+        [SerializeField] private RatHit ratHit;
 
         private Collider2D attackPoint;
 
         private void Awake()
         {
             ratMovement = GetComponent<RatMovement>();
-            monsterSearch = GetComponent<MonsterSearch>();
+            ratSearch = GetComponent<RatSearch>();
             ratAttack = GetComponent<RatAttack>();
 
             pos = GetComponent<Transform>();
 
 
-            monsterSearch.PlayerFound += OnPlayerFound;
-            monsterSearch.PlayerUnfound += OnPlayerUnfound;
+            ratSearch.PlayerFound += OnPlayerFound;
+            ratSearch.PlayerUnfound += OnPlayerUnfound;
         }
 
         private void Start()
@@ -34,9 +34,9 @@ namespace Monster.Rat
         }
         protected override void Init()
         {
-            checkAttackable = GetComponentInChildren<CheckAttackable>();
-            checkAttackable.PlayerAttacked += OnPlayerAttack;
-            checkAttackable.PlayerUnAttacked += OnPlayerUnAttack;
+            RatCheckATK = GetComponentInChildren<RatCheckATK>();
+            RatCheckATK.PlayerAttacked += OnPlayerAttack;
+            RatCheckATK.PlayerUnAttacked += OnPlayerUnAttack;
 
             MonsterState = State.Idle;
             maxHealth = 100.0f;
@@ -53,21 +53,21 @@ namespace Monster.Rat
             switch (MonsterState)
             {
                 case State.Idle:
-                    monsterSearch.Search();
+                    ratSearch.Search();
                     break;
                 case State.Patrol:
-                    monsterSearch.Search();
+                    ratSearch.Search();
                     ratMovement.Patrol();
                     break;
                 case State.Chase:
-                    monsterSearch.Search();
+                    ratSearch.Search();
                     ratMovement.Chase();
                     break;
                 case State.Attack:
                     StartCoroutine(ratAttack.AttackCoroutine());
                     break;
                 case State.Hit:
-                    monsterSearch.Search();
+                    ratSearch.Search();
                     
                     break;
                 case State.Die:
@@ -78,7 +78,7 @@ namespace Monster.Rat
 
         private void OnPlayerFound()
         {
-            this.target = monsterSearch.Target;
+            this.target = ratSearch.Target;
             ratMovement.Target = target;
             MonsterState = State.Chase;
         }
