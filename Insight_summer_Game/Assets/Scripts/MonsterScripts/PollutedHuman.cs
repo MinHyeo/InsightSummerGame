@@ -6,14 +6,6 @@ using UnityEngine;
 
 public class PollutedHuman : Monster
 {
-
-    private void Awake()
-    {
-        monsterAnimator = GetComponent<Animator>();
-        monsterColl = GetComponent<Collider2D>();
-        monsterRigid = GetComponent<Rigidbody2D>();
-        monsterSpriteRenderer = GetComponent<SpriteRenderer>(); 
-    }
     void Start()
     {
         
@@ -36,16 +28,16 @@ public class PollutedHuman : Monster
         monsterAnimator.SetBool("IsDetacted", true);
         //방향 측정  
         Vector2 dirVec = targetPlayer.position -  transform.position;  
-        if (dirVec.x > 0) { 
-            monsterSpriteRenderer.flipX = true;
+
+        //회전
+        if ((dirVec.x > 0 && transform.localScale.x > 0) || (dirVec.x < 0 && transform.localScale.x < 0)) {
+            transform.localScale = new Vector3(-(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
-        else
-        {
-            monsterSpriteRenderer.flipX = false;
-        }
+
         //거리 설정
         Vector2 nextVec = dirVec.normalized * (speed * 1.3f) * Time.deltaTime;  
         nextVec.y = 0;
+
         //이동
         monsterRigid.MovePosition(monsterRigid.position + nextVec);   
         monsterRigid.velocity = Vector2.zero;
@@ -87,35 +79,9 @@ public class PollutedHuman : Monster
         return;
     }
 
-    public override void Search()
-    {
-        //탐지 범위 생성
-        targetPlayer = (Physics2D.CircleCast(transform.position, searchRange, Vector2.zero, 0, playerLayer)).transform;
-        //플레이어를 찾았을 경우
-        if (targetPlayer != null) {
-            Debug.Log("Player Detacted!!");
-            if (Vector2.Distance(transform.position, targetPlayer.position) <= attackRange) {
-                Attack();
-            }
-            Chase();
-        }
-        else
-        {
-            monsterAnimator.SetBool("IsDetacted", false);
-        }
-    }
     //몸빵 충돌 구현하기
     /*private void OnTriggerEnter2D(Collider2D collision)
     {
         Contact();
     }*/
-    void OnDrawGizmosSelected()
-    {
-        //추적 범위
-        Gizmos.color = Color.white;
-        Gizmos.DrawWireSphere(transform.position, searchRange);
-        //공격 범위
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
-    }
 }

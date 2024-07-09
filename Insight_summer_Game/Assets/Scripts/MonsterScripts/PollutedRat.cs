@@ -4,14 +4,6 @@ using UnityEngine;
 
 public class PollutedRat : Monster
 {
-    private void Awake()
-    {
-        monsterAnimator = GetComponent<Animator>();
-        monsterColl = GetComponent<Collider2D>();
-        monsterRigid = GetComponent<Rigidbody2D>();
-        monsterSpriteRenderer = GetComponent<SpriteRenderer>();
-    }
-
     void Start()
     {
 
@@ -52,11 +44,6 @@ public class PollutedRat : Monster
     }
 
     public override void Walk()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void Search()
     {
         throw new System.NotImplementedException();
     }

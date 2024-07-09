@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class BoneSpider : Monster
 {
+    void Start()
+    {
+
+    }
+
+    void Update()
+    {
+
+    }
+
     public override void Attack()
     {
         throw new System.NotImplementedException();
@@ -34,25 +44,8 @@ public class BoneSpider : Monster
         throw new System.NotImplementedException();
     }
 
-    public override void Search()
-    {
-        throw new System.NotImplementedException();
-    }
-
     public override void Walk()
     {
         throw new System.NotImplementedException();
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class PollutedMushroom : Monster
 {
+    void Start()
+    {
+
+    }
+
+    void Update()
+    {
+
+    }
+
     public override void Attack()
     {
         throw new System.NotImplementedException();
@@ -30,11 +40,6 @@ public class PollutedMushroom : Monster
     }
 
     public override void Idle()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void Search()
     {
         throw new System.NotImplementedException();
     }
