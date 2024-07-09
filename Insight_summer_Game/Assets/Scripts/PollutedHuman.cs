@@ -30,18 +30,13 @@ public class PollutedHuman : Monster
 
     void Update()
     {
-        Scan();
-        if (IsAttackableDistance()) {
-            Attack();
-        }
-        if (currentHealth <= 0) { 
-            Dead();
-        }
+        Search();
     }
     public override void Attack()
     {
         Debug.Log("Monster is Attacking");
-        targetPlayer.GetComponent<Player>().Hit(attackPower);
+
+        targetPlayer.GetComponent<HeroKnight>().Hit(attackPower);
         return;
     }
 
@@ -49,8 +44,8 @@ public class PollutedHuman : Monster
     {
         Debug.Log("Monster is Chasing");
         monsterAnimator.SetBool("IsDetacted", true);
-        //움직이기
-        Vector2 dirVec = targetPlayer.position -  transform.position;  //방향 측정  
+        //방향 측정  
+        Vector2 dirVec = targetPlayer.position -  transform.position;  
         if (dirVec.x > 0) { 
             monsterSpriteRenderer.flipX = true;
         }
@@ -58,9 +53,11 @@ public class PollutedHuman : Monster
         {
             monsterSpriteRenderer.flipX = false;
         }
-        Vector2 nextVec = dirVec.normalized * (speed * 1.3f) * Time.deltaTime;  //거리 설정
+        //거리 설정
+        Vector2 nextVec = dirVec.normalized * (speed * 1.3f) * Time.deltaTime;  
         nextVec.y = 0;
-        monsterRigid.MovePosition(monsterRigid.position + nextVec);   //이동
+        //이동
+        monsterRigid.MovePosition(monsterRigid.position + nextVec);   
         monsterRigid.velocity = Vector2.zero;
         return;
     }
@@ -68,7 +65,7 @@ public class PollutedHuman : Monster
     public override void Contact()
     {
         Debug.Log("Player Hitted");
-        targetPlayer.GetComponent<Player>().Hit(1.0f);
+        targetPlayer.GetComponent<HeroKnight>().Hit(1.0f);
         return;
     }
 
@@ -81,6 +78,10 @@ public class PollutedHuman : Monster
     public override void Hit()
     {
         Debug.Log("Monster Hitted");
+        if (currentHealth <= 0)
+        {
+            Dead();
+        }
         return;
     }
 
@@ -96,13 +97,16 @@ public class PollutedHuman : Monster
         return;
     }
 
-    public override void Scan()
+    public override void Search()
     {
         //탐지 범위 생성
         targetPlayer = (Physics2D.CircleCast(transform.position, searchRange, Vector2.zero, 0, playerLayer)).transform;
         //플레이어를 찾았을 경우
         if (targetPlayer != null) {
             Debug.Log("Player Detacted!!");
+            if (Vector2.Distance(transform.position, targetPlayer.position) <= attackRange) {
+                Attack();
+            }
             Chase();
         }
         else
@@ -110,24 +114,18 @@ public class PollutedHuman : Monster
             monsterAnimator.SetBool("IsDetacted", false);
         }
     }
-    public bool IsAttackableDistance() {
-        //공격 가능한 거리인지 측정
-        if (targetPlayer == null) {
-            return false;
-        }
-        float distance = Vector2.Distance(transform.position, targetPlayer.position);
-        if (distance <= attackRange){
-            Debug.Log("Monster Attackable Range");
-            return true;   
-        }
-        else
-        {
-            return false;
-        }
-    }
     //몸빵 충돌 구현하기
-    private void OnTriggerEnter2D(Collider2D collision)
+    /*private void OnTriggerEnter2D(Collider2D collision)
     {
         Contact();
+    }*/
+    void OnDrawGizmosSelected()
+    {
+        //추적 범위
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(transform.position, searchRange);
+        //공격 범위
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 }

@@ -4,14 +4,14 @@ using UnityEngine;
 //Monster Abstract class
 public abstract class Monster : MonoBehaviour
 {
-    // Start is called before the first frame update
+    //These veriables are initialized at inspector
     [Header("Monster Status")]
-    public float currentHealth;
-    public float maxHealth;
-    public float speed;
-    public float attackPower;
-    public float attackRange;
-    public float searchRange;
+    [SerializeField] protected float currentHealth;
+    [SerializeField] protected float maxHealth;
+    [SerializeField] protected float speed;
+    [SerializeField] protected float attackPower;
+    [SerializeField] protected float attackRange;
+    [SerializeField] protected float searchRange;
 
    //Monster Behaviors(Method)
    public abstract void Attack();
@@ -21,7 +21,7 @@ public abstract class Monster : MonoBehaviour
    public abstract void Idle();
    public abstract void Walk();
    public abstract void Chase();
-   public abstract void Scan();
+   public abstract void Search();
 
 
 }

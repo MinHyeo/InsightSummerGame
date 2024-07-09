@@ -13,7 +13,7 @@ public class PollutedRat : Monster
     // Update is called once per frame
     void Update()
     {
-        Scan();
+        Search();
     }
     public override void Attack()
     {
@@ -50,7 +50,7 @@ public class PollutedRat : Monster
         throw new System.NotImplementedException();
     }
 
-    public override void Scan()
+    public override void Search()
     {
         throw new System.NotImplementedException();
     }
