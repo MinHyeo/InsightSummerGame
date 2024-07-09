@@ -30,7 +30,7 @@ public class Rat : Monster
         speed = 4;
         attackPower = 10;
         attackSpeed = 0;
-        attackRange = new Vector2(0, 0);
+        attackRange = 2f;
         searchRange = 3;//임시로 Vector2에서 float로 변경했음
     }
 

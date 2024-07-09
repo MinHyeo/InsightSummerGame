@@ -11,7 +11,11 @@ public abstract class Monster : MonoBehaviour
     public float speed;
     public float attackPower;
     public float attackSpeed;
-    public Vector2 attackRange;
+
+    public float attackRange;
+    public float attackDistance;
+    public Vector2 attackDirection;
+
     public float searchRange;
 
     public abstract void Attack();

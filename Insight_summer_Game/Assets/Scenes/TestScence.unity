@@ -161,12 +161,10 @@ MonoBehaviour:
   speed: 0
   attackPower: 0
   attackSpeed: 0
-  attackRange: {x: 0, y: 0}
+  attackRange: 0
+  attackDistance: 0
+  attackDirection: {x: 0, y: 0}
   searchRange: 0
-  monsterRigidbody: {fileID: 0}
-  spriteRenderer: {fileID: 0}
-  col: {fileID: 0}
-  animator: {fileID: 0}
   playerLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -481,7 +479,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1187899297
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -500,7 +498,9 @@ MonoBehaviour:
   speed: 0
   attackPower: 0
   attackSpeed: 0
-  attackRange: {x: 0, y: 0}
+  attackRange: 0
+  attackDistance: 0
+  attackDirection: {x: 0, y: 0}
   searchRange: 0
   monsterRigidbody: {fileID: 0}
   spriteRenderer: {fileID: 0}

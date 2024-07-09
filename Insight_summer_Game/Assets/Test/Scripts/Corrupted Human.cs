@@ -7,10 +7,10 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 public class CorruptedHuman : Monster
 {
     [Header("Components")]
-    public Rigidbody2D monsterRigidbody;
-    public SpriteRenderer spriteRenderer;
-    public Collider2D col;
-    public Animator animator;
+    [Serialize] Rigidbody2D monsterRigidbody;
+    [Serialize] SpriteRenderer spriteRenderer;
+    [Serialize] Collider2D col;
+    [Serialize] Animator animator;
 
     [Header("Settings")]
     public LayerMask playerLayer;
@@ -30,10 +30,12 @@ public class CorruptedHuman : Monster
         isLive = true;
         maxHealth = 100;
         curhealth = maxHealth;
-        speed = 2;
-        attackPower = 10;
-        attackSpeed = 1;
-        attackRange = new Vector2(3,1); 
+        speed = 2f;
+        attackPower = 10f;
+        attackSpeed = 1f;
+        attackRange = 0.5f;
+        attackDirection = new Vector2(1, 0);
+        attackDistance = 1f;
         searchRange = 3;//임시로 Vector2에서 float로 변경했음
     }
 
@@ -58,20 +60,25 @@ public class CorruptedHuman : Monster
     }
 
     public override void Chace() {
+        if (targetPlayer == null) {
+            return;
+        }
         Vector2 direction = (targetPlayer.position - transform.position).normalized;
         monsterRigidbody.velocity = new Vector2(direction.x * speed, monsterRigidbody.velocity.y);
 
         animator.SetInteger("AnimState", 1);
 
         if (direction.x > 0) {
-            //spriteRenderer.flipX = false;
-            transform.localScale = new Vector3(1f, 1f, 1f);
-
+            spriteRenderer.flipX = false;
         }
         else if (direction.x < 0) {
-            //spriteRenderer.flipX = true;
-            transform.localScale = new Vector3(-1f, 1f, 1f);
+            spriteRenderer.flipX = true;
         }
+
+        attackDirection = spriteRenderer.flipX ? new Vector2(-Mathf.Abs(attackDirection.x), attackDirection.y)
+                                               : new Vector2(Mathf.Abs(attackDirection.x), attackDirection.y);
+
+
     }
 
     public override void Die() {
@@ -113,30 +120,34 @@ public class CorruptedHuman : Monster
     }
 
     private void CheckAttackRange() { // 공격가능 범위 안에 플레이어가 있는지 탐색
-        Collider2D playerInRange = Physics2D.OverlapBox(transform.position, attackRange, 0, playerLayer);
-        if (playerInRange != null && playerInRange.CompareTag("Player")) {
+        RaycastHit2D hitPlayer = Physics2D.CircleCast(transform.position, attackRange, attackDirection, attackDistance,playerLayer);
+        if (hitPlayer.collider != null) {
+            Debug.Log("공격 범위안에 플레이어 있음");
             Attack();
         }
     }
 
     public void DetectAttack() {
-        if (attackPoint != null) {
-            Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(attackPoint.position, attackRange.y/2, playerLayer);
-            foreach (Collider2D enemy in hitPlayer) {
-                Debug.Log("플레이어 맞음");
-                enemy.GetComponent<Player>().TakeDamage(attackPower);
-            }
+        RaycastHit2D hitPlayer = Physics2D.CircleCast(transform.position, attackRange, attackDirection, attackDistance, playerLayer);
+        if(hitPlayer.collider != null) {
+            Debug.Log("플레이어 hit");
+            hitPlayer.collider.GetComponent<Player>().TakeDamage(attackPower);
         }
         
     }
 
     void OnDrawGizmosSelected() { 
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.white;
         Gizmos.DrawWireSphere(transform.position, searchRange); //추적 탐지 범위
-        Gizmos.DrawWireCube(transform.position, attackRange);// 공격 탐지 범위
 
-        if (attackPoint != null) {
-            Gizmos.DrawWireSphere(attackPoint.position, attackRange.y / 2); //공격 판정 범위
-        }
+
+        Vector2 start = transform.position;
+        Vector2 end = start + attackDirection.normalized * attackDistance;
+        float radius = attackRange;
+        Gizmos.color = Color.red;
+        // 시작점 원형 기즈모
+        Gizmos.DrawWireSphere(start, radius);
+        // 끝점 원형 기즈모
+        Gizmos.DrawWireSphere(end, radius);
     }
 }
