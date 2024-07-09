@@ -2,19 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PollutedRat : Monster
+public class SlimeHuman : Monster
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        Search();
-    }
     public override void Attack()
     {
         throw new System.NotImplementedException();
@@ -45,13 +34,25 @@ public class PollutedRat : Monster
         throw new System.NotImplementedException();
     }
 
+    public override void Search()
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override void Walk()
     {
         throw new System.NotImplementedException();
     }
 
-    public override void Search()
+    // Start is called before the first frame update
+    void Start()
     {
-        throw new System.NotImplementedException();
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
     }
 }

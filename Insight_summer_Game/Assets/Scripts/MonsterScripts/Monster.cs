@@ -13,8 +13,18 @@ public abstract class Monster : MonoBehaviour
     [SerializeField] protected float attackRange;
     [SerializeField] protected float searchRange;
 
-   //Monster Behaviors(Method)
-   public abstract void Attack();
+    [Header("Monster Component")]
+    [SerializeField] protected Animator monsterAnimator;
+    [SerializeField] protected Collider2D monsterColl;
+    [SerializeField] protected Rigidbody2D monsterRigid;
+    [SerializeField] protected SpriteRenderer monsterSpriteRenderer;
+
+    [Header("Target Player Info")]
+    [SerializeField] protected LayerMask playerLayer;
+    [SerializeField] protected Transform targetPlayer;
+
+    //Monster Behaviors(Method)
+    public abstract void Attack();
    public abstract void Contact();
    public abstract void Hit();
    public abstract void Dead();

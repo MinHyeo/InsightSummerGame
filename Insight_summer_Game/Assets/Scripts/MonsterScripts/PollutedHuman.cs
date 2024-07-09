@@ -6,15 +6,6 @@ using UnityEngine;
 
 public class PollutedHuman : Monster
 {
-    [Header("Monster Component")]
-    public Animator monsterAnimator;
-    public Collider2D monsterColl;
-    public Rigidbody2D monsterRigid;
-    public SpriteRenderer monsterSpriteRenderer;
-
-    [Header("Target Player Info")]
-    public LayerMask playerLayer;
-    public Transform targetPlayer;
 
     private void Awake()
     {
@@ -27,7 +18,6 @@ public class PollutedHuman : Monster
     {
         
     }
-
     void Update()
     {
         Search();
