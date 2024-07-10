@@ -2,27 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Rat : Monster
 {
-
+    HeroKnight player;
 
     protected override void Awake()
     {
-        rigid = GetComponent<Rigidbody2D>();
+        base.Awake();
+        attackPower = 10f;
     }
 
     protected override void FixedUpdate()
     {
-        Move();
+        base.FixedUpdate();
     }
 
     protected override void Move()
     {
-        rigid.velocity = new Vector2(nextMove * movePower, rigid.velocity.y);
-        CheckGround();
-
-        nextMove = -1;
-
+        base.Move();
     }
+
+    
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+
+
+            Attack(target);
+    }
+
+    private void Attack(Transform target)
+    {
+         target.GetComponent<HeroKnight>();
+        if (player != null)
+        {
+
+            player.Hit();
+        }
+    }
+
+    
 }
+
 

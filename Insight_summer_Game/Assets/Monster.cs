@@ -28,7 +28,7 @@ public class Monster : MonoBehaviour
     protected virtual void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
-        Invoke("Think", 5);
+        Invoke("Think", 4);
     }
 
     protected virtual void Start()
@@ -66,7 +66,7 @@ public class Monster : MonoBehaviour
     protected virtual void Think()
     {
         nextMove = Random.Range(-1, 2);
-        Invoke("Think", 5);
+        Invoke("Think", 4);
     }
 
     protected virtual void CheckGround()
@@ -80,7 +80,7 @@ public class Monster : MonoBehaviour
         {
             nextMove *= -1;
             CancelInvoke();
-            Invoke("Think", 5);
+            Invoke("Think", 4);
         }
 
     }
@@ -121,6 +121,7 @@ public class Monster : MonoBehaviour
 
     protected virtual void Hit()
     {
+        //
         health -= 10;
 
         if (health <= 0) Death();
@@ -129,7 +130,6 @@ public class Monster : MonoBehaviour
     {
        
     }
-
 
 
     protected virtual bool Detect(Transform target)
@@ -148,15 +148,12 @@ public class Monster : MonoBehaviour
 
             if (angleToTarget <= detectionAngle)
             {
-                Debug.Log("Target detected within fan area: " + target.name);
-                Debug.Log("Distance to target: " + distanceToTarget);
                 return true;
             }
         }
         return false;
         
     }
-
 
     protected virtual void Flip()
     {
