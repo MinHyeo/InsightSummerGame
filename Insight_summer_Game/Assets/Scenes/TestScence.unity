@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 675118672}
   - component: {fileID: 675118673}
   - component: {fileID: 675118669}
+  - component: {fileID: 675118675}
   m_Layer: 0
   m_Name: Monster1
   m_TagString: Untagged
@@ -330,6 +331,28 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &675118675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 675118668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5928e71c7414de469b56aeede44a19d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackPower: 0
+  attackSpeed: 0
+  attackRange: 0
+  attackDistance: 0
+  attackDirection: {x: 0, y: 0}
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  monster: {fileID: 0}
+  anim: {fileID: 0}
 --- !u!1 &891150634
 GameObject:
   m_ObjectHideFlags: 0
