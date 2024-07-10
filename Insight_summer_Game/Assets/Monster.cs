@@ -10,32 +10,32 @@ public class Monster : MonoBehaviour
     public float attackRange;
     public float searchRange;
     public float attackSpeed;
-    public float movePower = 1f;
+    public float movePower = 2f;
 
     public Transform target;
     public float detectionRadius = 3f;
-    public float detectionAngle = 45f;
+    public float detectionAngle = 180f;
+    public float chaseTime;
+    public float chaseDuration = 3f;
 
-    private Rigidbody2D rigid;
-    private Vector3 movement;
-    private int movementFlag = 0;
-    private bool isChasing = false;
-    private bool isDetectingWall = false;
-    private float idleTime = 2f;
-    private float moveDuration = 3f;
-    private bool facingRight = true;
+    protected Rigidbody2D rigid;
+    protected int nextMove;
+    protected bool isChasing = false;
+    protected bool facingRight = true;
 
-    private void Awake()
+
+
+    protected virtual void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
+        Invoke("Think", 5);
     }
 
-    private void Start()
+    protected virtual void Start()
     {
-        StartCoroutine("ChangeMovement");
     }
 
-    private void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         if (isChasing)
         {
@@ -47,19 +47,66 @@ public class Monster : MonoBehaviour
         }
     }
 
-    void Search()
+    protected virtual void Move()
     {
-        Detect(target);
+        rigid.velocity = new Vector2(nextMove * movePower, rigid.velocity.y);
+        CheckGround();
 
-        if (!isDetectingWall)
+        if (nextMove == -1 && facingRight)
+        {
+            Flip();
+        }
+        else if (nextMove == 1&& !facingRight)
+        {
+            Flip();
+        }
+
+    }
+
+    protected virtual void Think()
+    {
+        nextMove = Random.Range(-1, 2);
+        Invoke("Think", 5);
+    }
+
+    protected virtual void CheckGround()
+    {
+        rigid.velocity = new Vector2(nextMove, rigid.velocity.y);
+        Vector2 frontVec = new Vector2(rigid.position.x + nextMove, rigid.position.y);
+        Debug.DrawRay(frontVec, Vector3.down, new Color(0, 1, 0));
+        RaycastHit2D rayHit = Physics2D.Raycast(frontVec, Vector3.down, 1, LayerMask.GetMask("Ground"));
+
+        if (rayHit.collider == null)
+        {
+            nextMove *= -1;
+            CancelInvoke();
+            Invoke("Think", 5);
+        }
+
+    }
+    protected virtual void Search()
+    {
+        if (Detect(target))
+        {
+            isChasing = true;
+            chaseTime = chaseDuration;
+        }
+        else
         {
             Move();
         }
     }
 
-    void Chase()
+    protected virtual void Chase()
     {
         if (target == null) return;
+
+        chaseTime -= Time.fixedDeltaTime;
+        if(chaseTime <= 0)
+        {
+            isChasing=false;
+            return;
+        }
 
         Vector3 directionToTarget = (target.position - transform.position).normalized;
         rigid.velocity = new Vector2(directionToTarget.x * movePower, rigid.velocity.y);
@@ -68,36 +115,28 @@ public class Monster : MonoBehaviour
         {
             Flip();
         }
+
+        
     }
 
-    void Death()
+    protected virtual void Hit()
+    {
+        health -= 10;
+
+        if (health <= 0) Death();
+    }
+    protected virtual void Death()
     {
        
     }
 
-    void Move()
+
+
+    protected virtual bool Detect(Transform target)
     {
-        Vector3 moveVelocity = Vector3.zero;
+        if (target == null) return false;
 
-        if (movementFlag == 1)
-        {
-            moveVelocity = Vector3.left;
-            if (facingRight) Flip();
-        }
-        else if (movementFlag == 2)
-        {
-            moveVelocity = Vector3.right;
-            if (!facingRight) Flip();
-        }
-
-        transform.position += moveVelocity * movePower * Time.fixedDeltaTime;
-    }
-
-    public void Detect(Transform target)
-    {
-        if (target == null) return;
-
-        Vector2 directionToTarget = target.position - transform.position;
+        Vector2 directionToTarget = target.position - transform.position; ///////
         float distanceToTarget = directionToTarget.magnitude;
 
         if (distanceToTarget <= detectionRadius)
@@ -106,47 +145,20 @@ public class Monster : MonoBehaviour
 
             float angleToTarget = Vector2.Angle(transform.right, directionToTarget);
 
+
             if (angleToTarget <= detectionAngle)
             {
                 Debug.Log("Target detected within fan area: " + target.name);
                 Debug.Log("Distance to target: " + distanceToTarget);
-                isChasing = true;
+                return true;
             }
         }
+        return false;
+        
     }
 
-    IEnumerator ChangeMovement()
-    {
-        while (true)
-        {
-            movementFlag = Random.Range(0, 3);
 
-            if (movementFlag != 0)
-            {
-                yield return new WaitForSeconds(moveDuration);
-            }
-
-            movementFlag = 0;
-            yield return new WaitForSeconds(idleTime);
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Wall"))
-        {
-            movementFlag = movementFlag == 1 ? 2 : 1;
-            isDetectingWall = true;
-            Invoke("ResetWallDetection", 1f); 
-        }
-    }
-
-    private void ResetWallDetection()
-    {
-        isDetectingWall = false;
-    }
-
-    private void Flip()
+    protected virtual void Flip()
     {
         facingRight = !facingRight;
         Vector3 theScale = transform.localScale;
@@ -154,7 +166,7 @@ public class Monster : MonoBehaviour
         transform.localScale = theScale;
     }
 
-    private void OnDrawGizmos()
+    protected virtual void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
 
