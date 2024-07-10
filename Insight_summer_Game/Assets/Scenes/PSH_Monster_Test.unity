@@ -632,6 +632,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4476914466927263581, guid: d5b5e3f2c1cb4af4099e6044dab36df6, type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4952253606663558503, guid: d5b5e3f2c1cb4af4099e6044dab36df6, type: 3}
       propertyPath: speed
       value: 3
@@ -664,6 +668,10 @@ PrefabInstance:
       propertyPath: m_Constraints
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 6457669618378792259, guid: d5b5e3f2c1cb4af4099e6044dab36df6, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 5ed8dd51ef60e6f4da8eef02eb5d6850, type: 2}
     - target: {fileID: 7592110354244940825, guid: d5b5e3f2c1cb4af4099e6044dab36df6, type: 3}
       propertyPath: m_Name
       value: PollutedMushroom
