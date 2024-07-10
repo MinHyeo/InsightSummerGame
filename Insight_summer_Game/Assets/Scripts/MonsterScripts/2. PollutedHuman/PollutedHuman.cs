@@ -10,37 +10,11 @@ public class PollutedHuman : Monster
     {
         
     }
-    void Update()
-    {
-        Search();
-    }
     public override void Attack()
     {
-        Debug.Log("Monster is Attacking");
-
-        targetPlayer.GetComponent<HeroKnight>().Hit(attackPower);
-        return;
-    }
-
-    public override void Chase()
-    {
-        Debug.Log("Monster is Chasing");
-        monsterAnimator.SetBool("IsDetacted", true);
-        //방향 측정  
-        Vector2 dirVec = targetPlayer.position -  transform.position;  
-
-        //회전
-        if ((dirVec.x > 0 && transform.localScale.x > 0) || (dirVec.x < 0 && transform.localScale.x < 0)) {
-            transform.localScale = new Vector3(-(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        }
-
-        //거리 설정
-        Vector2 nextVec = dirVec.normalized * (speed * 1.3f) * Time.deltaTime;  
-        nextVec.y = 0;
-
-        //이동
-        monsterRigid.MovePosition(monsterRigid.position + nextVec);   
-        monsterRigid.velocity = Vector2.zero;
+        //Monster 코드 가져옴
+        base.Attack();
+        Debug.Log("PollutedHuman is Attacking");
         return;
     }
 
@@ -51,15 +25,9 @@ public class PollutedHuman : Monster
         return;
     }
 
-    public override void Dead()
-    {
-        monsterAnimator.SetBool("Dead", true);
-        return;
-    }
-
     public override void Hit()
     {
-        Debug.Log("Monster Hitted");
+        Debug.Log("PollutedHuman Hitted");
         if (currentHealth <= 0)
         {
             Dead();
@@ -69,13 +37,13 @@ public class PollutedHuman : Monster
 
     public override void Idle()
     {
-        Debug.Log("Monster is Idle Mode now");
+        Debug.Log("PollutedHuman is Idle Mode now");
         return;
     }
 
     public override void Walk()
     {
-        Debug.Log("Monster is Scouting");
+        Debug.Log("PollutedHuman is Scouting");
         return;
     }
 

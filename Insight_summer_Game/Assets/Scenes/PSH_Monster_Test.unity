@@ -649,12 +649,20 @@ PrefabInstance:
       value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 4952253606663558503, guid: d5b5e3f2c1cb4af4099e6044dab36df6, type: 3}
+      propertyPath: searchRange
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4952253606663558503, guid: d5b5e3f2c1cb4af4099e6044dab36df6, type: 3}
       propertyPath: currentHealth
       value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 4952253606663558503, guid: d5b5e3f2c1cb4af4099e6044dab36df6, type: 3}
       propertyPath: playerLayer.m_Bits
       value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 5180786369261195784, guid: d5b5e3f2c1cb4af4099e6044dab36df6, type: 3}
+      propertyPath: m_Constraints
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7592110354244940825, guid: d5b5e3f2c1cb4af4099e6044dab36df6, type: 3}
       propertyPath: m_Name
@@ -847,6 +855,6 @@ SceneRoots:
   - {fileID: 619394802}
   - {fileID: 2037491795}
   - {fileID: 174037706}
-  - {fileID: 5632083429538678384}
   - {fileID: 6511919563357434678}
+  - {fileID: 5632083429538678384}
   - {fileID: 3723981425809771566}

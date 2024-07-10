@@ -9,26 +9,15 @@ public class PollutedRat : Monster
 
     }
 
-    void Update()
-    {
-        Search();
-    }
     public override void Attack()
     {
-        throw new System.NotImplementedException();
-    }
-
-    public override void Chase()
-    {
-        throw new System.NotImplementedException();
+        //Monster ÄÚµå °¡Á®¿È
+        base.Attack();
+        Debug.Log("PollutedRat is Attacking");
+        return;
     }
 
     public override void Contact()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void Dead()
     {
         throw new System.NotImplementedException();
     }

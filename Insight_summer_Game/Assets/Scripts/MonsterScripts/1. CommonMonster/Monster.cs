@@ -23,6 +23,10 @@ public abstract class Monster : MonoBehaviour
     [SerializeField] protected LayerMask playerLayer;
     [SerializeField] protected Transform targetPlayer;
 
+    private void Update()
+    {
+        Search();
+    }
 
     private void Awake()
     {
@@ -33,13 +37,43 @@ public abstract class Monster : MonoBehaviour
     }
 
     //Monster Behaviors(Method)
-    public abstract void Attack();
+    
     public abstract void Contact();
     public abstract void Hit();
-    public abstract void Dead();
     public abstract void Idle();
     public abstract void Walk();
-    public abstract void Chase();
+
+    public void Dead()
+    {
+        monsterAnimator.SetBool("Dead", true);
+    }
+
+    public virtual void Attack()
+    {
+        targetPlayer.GetComponent<HeroKnight>().Hit(attackPower);
+    }
+
+    public void Chase() {
+        Debug.Log("Monster is Chasing");
+        monsterAnimator.SetBool("IsDetacted", true);
+        //방향 측정  
+        Vector2 dirVec = targetPlayer.position - transform.position;
+
+        //회전
+        if ((dirVec.x > 0 && transform.localScale.x > 0) || (dirVec.x < 0 && transform.localScale.x < 0))
+        {
+            transform.localScale = new Vector3(-(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
+
+        //거리 설정
+        Vector2 nextVec = dirVec.normalized * (speed * 1.3f) * Time.deltaTime;
+        nextVec.y = 0;
+
+        //이동
+        monsterRigid.MovePosition(monsterRigid.position + nextVec);
+        monsterRigid.velocity = Vector2.zero;
+        return;
+    }
     public void Search() {
         //탐지 범위 생성
         targetPlayer = (Physics2D.CircleCast(transform.position, searchRange, Vector2.zero, 0, playerLayer)).transform;
@@ -59,6 +93,7 @@ public abstract class Monster : MonoBehaviour
         }
     }
 
+    //범위 확인용
     void OnDrawGizmosSelected()
     {
         //추적 범위

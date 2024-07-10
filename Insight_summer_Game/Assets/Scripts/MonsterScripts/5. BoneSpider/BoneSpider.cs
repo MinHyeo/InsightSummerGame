@@ -9,27 +9,15 @@ public class BoneSpider : Monster
 
     }
 
-    void Update()
-    {
-
-    }
-
     public override void Attack()
     {
-        throw new System.NotImplementedException();
-    }
-
-    public override void Chase()
-    {
-        throw new System.NotImplementedException();
+        //Monster ÄÚµå °¡Á®¿È
+        base.Attack();
+        Debug.Log("BoneSpider is Attacking");
+        return;
     }
 
     public override void Contact()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void Dead()
     {
         throw new System.NotImplementedException();
     }
