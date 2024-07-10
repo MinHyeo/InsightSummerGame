@@ -41,7 +41,7 @@ namespace Monster.Mouse
         }
         private void FixedUpdate()
         {
-            Search();
+            //Search();
             switch (state) 
             {
                 case State.Idle:
@@ -61,6 +61,13 @@ namespace Monster.Mouse
             {
                 collision.GetComponent<HeroKnight>().Hit(attackPower);
             }
+        }
+        public override void StartAttack()
+        {
+        }
+        public override void Attack()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

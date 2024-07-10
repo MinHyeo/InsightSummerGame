@@ -25,6 +25,7 @@ namespace Monster
         protected float speed;
         protected float attackPower;
         protected float attackSpeed;
+        protected float attackDelay;
         protected Vector2 attackRange;
         protected Vector2 searchRange;
         protected int thinkTime;
@@ -34,10 +35,12 @@ namespace Monster
         protected Rigidbody2D rigid;
         protected Animator anim;
 
+        protected PlayerScanner playerScanner;
         protected Transform target;
 
         protected void Think()
         {
+            Debug.Log(nextMove);
             nextMove = Random.Range(-1, 2);
             if(nextMove != 0)
                 state = State.Move;
@@ -47,7 +50,7 @@ namespace Monster
             thinkTime = Random.Range(3, 5);
             Invoke("Think", thinkTime);
         }
-        protected void Idle()
+        protected virtual void Idle()
         {
             //Animation Part
         }
@@ -63,29 +66,20 @@ namespace Monster
 
             //Animation Part    
         }
-        protected virtual void Search()
+        public void FindPlayer(Collider2D player)
         {
-            RaycastHit2D rayHit = Physics2D.CircleCast(transform.position, searchRange.x, Vector2.down, searchRange.y, LayerMask.GetMask("Player"));
-            if (rayHit.collider != null)
-            {
-                Debug.Log("Search");
-                state = State.Chase;
-                target = rayHit.transform;
-                CancelInvoke("Think");
-            }
-            else
-            {
-                if (state != State.Chase && state != State.Attack)
-                    return;
-
-                state = State.Idle;
-                target = null;
-                Invoke("Think", thinkTime);
-            }
+            target = player.transform;
+            CancelInvoke("Think");
+            state = State.Chase;
+        }
+        public void LostPlayer()
+        {
+            target = null;
+            state = State.Idle;
+            Invoke("Think", thinkTime);
         }
         protected virtual void Chase()
         {
-            Debug.Log("Chase");
             Vector2 targetDir = target.position - transform.position;
             Vector2 fixedDir = new Vector2(
             targetDir.x > 0 ? 1 : (targetDir.x < 0 ? -1 : 1),
@@ -93,6 +87,12 @@ namespace Monster
             );
             sprite.flipX = targetDir.x > 0;
             rigid.MovePosition(new Vector2(transform.position.x + fixedDir.x * speed * Time.deltaTime, transform.position.y));
+        }
+        public abstract void StartAttack();
+        public abstract void Attack();
+        public virtual void StopAttack()
+        {
+
         }
         public virtual void Hit()
         {
