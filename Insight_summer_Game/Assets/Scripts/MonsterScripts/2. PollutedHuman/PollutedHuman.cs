@@ -17,6 +17,11 @@ public class PollutedHuman : Monster
         Debug.Log("PollutedHuman is Attacking");
         return;
     }
+    public override void Hit()
+    {
+        base.Hit();
+        Debug.Log("PollutedHuman Hitted");
+    }
 
     public override void Contact()
     {
@@ -25,16 +30,7 @@ public class PollutedHuman : Monster
         return;
     }
 
-    public override void Hit()
-    {
-        Debug.Log("PollutedHuman Hitted");
-        if (currentHealth <= 0)
-        {
-            Dead();
-        }
-        return;
-    }
-
+  
     public override void Idle()
     {
         Debug.Log("PollutedHuman is Idle Mode now");

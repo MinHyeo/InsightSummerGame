@@ -17,12 +17,13 @@ public class PollutedMushroom : Monster
         return;
     }
 
-    public override void Contact()
+    public override void Hit()
     {
-        throw new System.NotImplementedException();
+        base.Hit();
+        Debug.Log("PollutedMushroom Hitted");
     }
 
-    public override void Hit()
+    public override void Contact()
     {
         throw new System.NotImplementedException();
     }

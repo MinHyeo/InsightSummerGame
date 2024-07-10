@@ -23,6 +23,10 @@ public abstract class Monster : MonoBehaviour
     [SerializeField] protected LayerMask playerLayer;
     [SerializeField] protected Transform targetPlayer;
 
+    //Monster Behaviors(Method)
+    public abstract void Contact();
+    public abstract void Idle(); //Animation
+    public abstract void Walk(); //Animation
     private void Update()
     {
         Search();
@@ -35,13 +39,13 @@ public abstract class Monster : MonoBehaviour
         monsterRigid = GetComponent<Rigidbody2D>();
         monsterSpriteRenderer = GetComponent<SpriteRenderer>();
     }
-
-    //Monster Behaviors(Method)
-    
-    public abstract void Contact();
-    public abstract void Hit();
-    public abstract void Idle();
-    public abstract void Walk();
+    public virtual void Hit()
+    {
+        if (currentHealth <= 0)
+        {
+            Dead();
+        }
+    }
 
     public void Dead()
     {

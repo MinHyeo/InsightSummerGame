@@ -16,13 +16,14 @@ public class PollutedRat : Monster
         Debug.Log("PollutedRat is Attacking");
         return;
     }
-
-    public override void Contact()
+    public override void Hit()
     {
-        throw new System.NotImplementedException();
+        base.Hit();
+        Debug.Log("PollutedRat Hitted");
     }
 
-    public override void Hit()
+
+    public override void Contact()
     {
         throw new System.NotImplementedException();
     }

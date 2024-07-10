@@ -17,12 +17,13 @@ public class BoneSpider : Monster
         return;
     }
 
-    public override void Contact()
+    public override void Hit()
     {
-        throw new System.NotImplementedException();
+        base.Hit();
+        Debug.Log("BoneSpider Hitted");
     }
 
-    public override void Hit()
+    public override void Contact()
     {
         throw new System.NotImplementedException();
     }
