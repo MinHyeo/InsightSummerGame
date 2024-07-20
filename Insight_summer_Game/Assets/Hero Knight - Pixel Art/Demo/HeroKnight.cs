@@ -124,12 +124,12 @@ public class HeroKnight : MonoBehaviour {
             // Call one of three attack animations "Attack1", "Attack2", "Attack3"
             m_animator.SetTrigger("Attack" + m_currentAttack);
 
-            Vector2 boxSize = new Vector2(1.0f, 1.0f);
+            Vector2 boxSize = new Vector2(2.0f, 2.0f);
             Collider2D[] hit = Physics2D.OverlapBoxAll(transform.position + Vector3.forward, boxSize, 0, LayerMask.GetMask("Monster"));
             foreach (Collider2D monster in hit)
             {
                 Debug.Log("플레이어가 몬스터 공격");
-                //monster.GetComponent<Monster>().Hit();
+                monster.GetComponent<PollutedMushroom>().Hit();
             }
 
             // Reset timer

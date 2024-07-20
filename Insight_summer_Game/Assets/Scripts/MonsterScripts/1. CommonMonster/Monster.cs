@@ -59,7 +59,7 @@ public abstract class Monster : MonoBehaviour
 
     public void Chase() {
         Debug.Log("Monster is Chasing");
-        monsterAnimator.SetBool("IsDetacted", true);
+        //monsterAnimator.SetBool("IsDetacted", true);
         //방향 측정  
         Vector2 dirVec = targetPlayer.position - transform.position;
 

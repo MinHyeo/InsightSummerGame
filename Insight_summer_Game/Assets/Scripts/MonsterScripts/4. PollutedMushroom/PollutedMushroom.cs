@@ -20,6 +20,8 @@ public class PollutedMushroom : Monster
     public override void Hit()
     {
         base.Hit();
+        monsterAnimator.SetTrigger("Hit");
+        monsterAnimator.SetBool("IsDetacted", false);
         Debug.Log("PollutedMushroom Hitted");
     }
 
